@@ -10,12 +10,12 @@ $(document).ready(function () {
         $('#formCadastro #Cidade').val(obj.Cidade);
         $('#formCadastro #Logradouro').val(obj.Logradouro);
         $('#formCadastro #Telefone').val(obj.Telefone);
-        $('#formCadastro #CPF').val(obj.CPF);
+        $('#formCadastro #CPF').val(MascaraCPF(obj.CPF));
     }
 
     $('#formCadastro').submit(function (e) {
         e.preventDefault();
-        
+
         $.ajax({
             url: urlPost,
             method: "POST",
@@ -29,7 +29,7 @@ $(document).ready(function () {
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
-                "CPF": $(this).find("#CPF").val()
+                "CPF": RemoveCaractereNaoNumerico($(this).find("#CPF").val())
             },
             error:
             function (r) {

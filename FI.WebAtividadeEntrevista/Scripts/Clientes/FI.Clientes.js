@@ -6,6 +6,14 @@ $(document).ready(function () {
 
     $('#formCadastro').submit(function (e) {
         e.preventDefault();
+
+        if (!CPFValido(RemoveCaractereNaoNumerico($(this).find("#CPF").val()))) {
+            ErrorAlert('CPF Inválido!');
+            return;
+        } else {
+            document.getElementById("errorNotify").innerHTML = "";
+        }
+
         $.ajax({
             url: urlPost,
             method: "POST",
@@ -62,14 +70,9 @@ function ModalDialog(titulo, texto) {
     $('#' + random).modal('show');
 }
 
-function MascaraCPF(cpf) {
-    cpf = cpf.replace(/\D/g, "")
-    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
-    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
-    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
-    return cpf
-}
+function ErrorAlert(errorMessage) {
+    var textHtml = '<div class="alert alert-danger" role="alert">' +  errorMessage + '</div>';
 
-function RemoveCaractereNaoNumerico(cpf) {
-    return cpf.replace(/\D/g, "")
+    document.getElementById("errorNotify").innerHTML = textHtml;
+    $('#CPF').focus();
 }
