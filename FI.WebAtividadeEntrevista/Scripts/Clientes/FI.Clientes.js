@@ -1,5 +1,9 @@
 ﻿
 $(document).ready(function () {
+    $("#CPF").on("keyup", function () {
+        $('#CPF').val(MascaraCPF($('#CPF').val()));
+    });
+
     $('#formCadastro').submit(function (e) {
         e.preventDefault();
         $.ajax({
@@ -15,7 +19,7 @@ $(document).ready(function () {
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
-                "CPF": $(this).find("#CPF").val()
+                "CPF": RemoveCaractereNaoNumerico($(this).find("#CPF").val())
             },
             error:
             function (r) {
@@ -56,4 +60,16 @@ function ModalDialog(titulo, texto) {
 
     $('body').append(texto);
     $('#' + random).modal('show');
+}
+
+function MascaraCPF(cpf) {
+    cpf = cpf.replace(/\D/g, "")
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
+    cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2")
+    cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2")
+    return cpf
+}
+
+function RemoveCaractereNaoNumerico(cpf) {
+    return cpf.replace(/\D/g, "")
 }
