@@ -38,7 +38,13 @@ namespace WebAtividadeEntrevista.Controllers
             }
             else
             {
-                
+
+                if (bo.VerificarExistencia(model.CPF))
+                {
+                    Response.StatusCode = 400;
+                    return Json("CPF já existente no banco de dados.");
+                }
+
                 model.Id = bo.Incluir(new Cliente()
                 {                    
                     CEP = model.CEP,
