@@ -43,5 +43,14 @@ namespace FI.AtividadeEntrevista.BLL
             DAL.DaoBeneficiario daoBeneficiario = new DAL.DaoBeneficiario();
             return daoBeneficiario.Listar();
         }
+
+        /// <summary>
+        /// Consulta os beneficiarios
+        /// </summary>
+        public List<DML.Beneficiario> Consultar(long id)
+        {
+            DAL.DaoBeneficiario daoBeneficiario = new DAL.DaoBeneficiario();
+            return daoBeneficiario.Consultar(id);
+        }
     }
 }

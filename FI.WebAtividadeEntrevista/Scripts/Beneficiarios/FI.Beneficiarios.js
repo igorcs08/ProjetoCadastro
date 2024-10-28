@@ -1,9 +1,11 @@
-﻿
+﻿var ultimoCPFBeneficiario = null;
+
 $(document).ready(function () {
     
 })
 
 function AlterarBeneficiario(cpf, nome) {
+    ultimoCPFBeneficiario = cpf;
     $("#NomeBeneficiario").val(nome);
     $("#CPFBeneficiario").val(MascaraCPF(cpf));
 }

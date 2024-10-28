@@ -157,7 +157,7 @@ function ModalBeneficiarioEventos() {
             document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
         }
 
-        const beneficiario = listaBeneficiarios.find(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()))
+        const beneficiario = listaBeneficiarios.find(ben => ben.cpf === ultimoCPFBeneficiario)
 
         if (beneficiario) {
             beneficiario.nome = $("#NomeBeneficiario").val();
