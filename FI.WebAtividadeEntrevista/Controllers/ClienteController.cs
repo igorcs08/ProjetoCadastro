@@ -109,6 +109,14 @@ namespace WebAtividadeEntrevista.Controllers
                 CPF = model.CPF
             });
 
+            if (model.BeneficiariosIdList != null)
+            {
+                foreach (long beneficiarioId in model.BeneficiariosIdList)
+                {
+                    boBeneficiario.Excluir(beneficiarioId);
+                }
+            }
+
             foreach (BeneficiarioModel beneficiario in model.Beneficiarios)
             {
                 if (beneficiario.Id != null)

@@ -21,8 +21,6 @@ $(document).ready(function () {
         $('#formCadastro #Telefone').val(obj.Telefone);
         $('#formCadastro #CPF').val(MascaraCPF(obj.CPF));
 
-        console.log(1, obj.Beneficiarios);
-
         obj.Beneficiarios.forEach(function (beneficiario) {
             listaBeneficiarios.push({ id: beneficiario.Id, nome: beneficiario.Nome, cpf: beneficiario.CPF });
         });
@@ -52,7 +50,8 @@ $(document).ready(function () {
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
                 "CPF": RemoveCaractereNaoNumerico($(this).find("#CPF").val()),
-                "Beneficiarios": listaBeneficiarios
+                "Beneficiarios": listaBeneficiarios,
+                "BeneficiariosIdList": listaBeneficiariosParaRemover
             },
             error:
             function (r) {
@@ -180,10 +179,23 @@ function ModalBeneficiarioEventos() {
         const beneficiario = listaBeneficiarios.find(ben => ben.cpf === ultimoCPFBeneficiario)
 
         if (beneficiario) {
+            const existeBeneficiario = listaBeneficiarios.filter(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()));
+
+            if (existeBeneficiario.length > 0 && ultimoCPFBeneficiario !== RemoveCaractereNaoNumerico($("#CPFBeneficiario").val())) {
+                ErrorAlert('Não é possível adicionar um novo beneficiario com um CPF já existente.', true);
+                return;
+            }
+
             beneficiario.nome = $("#NomeBeneficiario").val();
             beneficiario.cpf = RemoveCaractereNaoNumerico($("#CPFBeneficiario").val());
             CarregarTabelaBeneficiarios();
         } else {
+            const existeBeneficiario = listaBeneficiarios.find(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()));
+            if (existeBeneficiario) {
+                ErrorAlert('Não é possível adicionar um novo beneficiario com um CPF já existente.', true);
+                return;
+            }
+            document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
             listaBeneficiarios.push({ id: null, nome: $("#NomeBeneficiario").val(), cpf: RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()) });
         }
 
