@@ -160,10 +160,23 @@ function ModalBeneficiarioEventos() {
         const beneficiario = listaBeneficiarios.find(ben => ben.cpf === ultimoCPFBeneficiario)
 
         if (beneficiario) {
+            const existeBeneficiario = listaBeneficiarios.filter(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()));
+
+            if (existeBeneficiario.length > 0 && ultimoCPFBeneficiario !== RemoveCaractereNaoNumerico($("#CPFBeneficiario").val())) {
+                ErrorAlert('Não é possível adicionar um novo beneficiario com um CPF já existente.', true);
+                return;
+            }
+
             beneficiario.nome = $("#NomeBeneficiario").val();
             beneficiario.cpf = RemoveCaractereNaoNumerico($("#CPFBeneficiario").val());
             CarregarTabelaBeneficiarios();
         } else {
+            const existeBeneficiario = listaBeneficiarios.find(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()));
+            if (existeBeneficiario) {
+                ErrorAlert('Não é possível adicionar um novo beneficiario com um CPF já existente.', true);
+                return;
+            }
+            document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
             listaBeneficiarios.push({ id: null, nome: $("#NomeBeneficiario").val(), cpf: RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()) });
         }
 
