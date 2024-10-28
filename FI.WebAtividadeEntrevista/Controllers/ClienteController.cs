@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using FI.AtividadeEntrevista.DML;
+using FI.WebAtividadeEntrevista.Models;
 
 namespace WebAtividadeEntrevista.Controllers
 {
@@ -26,7 +27,8 @@ namespace WebAtividadeEntrevista.Controllers
         public JsonResult Incluir(ClienteModel model)
         {
             BoCliente bo = new BoCliente();
-            
+            BoBeneficiario boBeneficiario = new BoBeneficiario();
+
             if (!this.ModelState.IsValid)
             {
                 List<string> erros = (from item in ModelState.Values
@@ -59,6 +61,18 @@ namespace WebAtividadeEntrevista.Controllers
                     CPF = model.CPF
                 });
 
+                if (model.Beneficiarios != null)
+                {
+                    foreach (BeneficiarioModel beneficiario in model.Beneficiarios)
+                    {
+                        beneficiario.Id = boBeneficiario.Incluir(new Beneficiario()
+                        {
+                            CPF = beneficiario.CPF,
+                            Nome = beneficiario.Nome,
+                            IdCliente = model.Id,
+                        });
+                    }
+                }
            
                 return Json("Cadastro efetuado com sucesso");
             }

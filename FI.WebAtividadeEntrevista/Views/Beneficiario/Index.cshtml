@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "Beneficiarios";
+}
+@section scripts{
+    <script>
+        var urlBeneficiario = '@Url.Action("Index", "Beneficiario", new { area = "" })';
+    </script>
+}
+
+<form id="formCadastroBeneficiario" method="post">
+    <div class="row">
+        <div class="col-md-12">
+            <p id="errorNotifyCPFBeneficiario"></p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="CPF">CPF:</label>
+                <input required="required" type="text" class="form-control" id="CPFBeneficiario" name="CPFBeneficiario" placeholder="Ex.: 251.589.874-54" maxlength="14">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="Nome">Nome:</label>
+                <input required="required" type="text" class="form-control" id="NomeBeneficiario" name="NomeBeneficiario" placeholder="Ex.: João" maxlength="50">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group" style="margin-top: 25px;">
+                <button id="btnIncluirBeneficiario" class="btn btn-success">Incluir</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table id="tabelaBeneficiario" class="table">
+    <thead>
+        <tr>
+            <th scope="col" style="width:25%">CPF</th>
+            <th scope="col" style="width:40%">Nome</th>
+            <th scope="col" style="width:35%">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="text-center">
+            <td colspan="3">Ainda não foram adicionados beneficiários</td>            
+        </tr>        
+    </tbody>
+</table>

@@ -5,9 +5,12 @@
 @section scripts{
     <script>
         var urlPost = '@Url.Action("Incluir", "Cliente", new { area = "" })';
+        var urlBeneficiario = '@Url.Action("Index", "Beneficiario", new { area = "" })';
+        var listaBeneficiarios = [];
     </script>
     @Scripts.Render("~/bundles/utils")
     @Scripts.Render("~/bundles/clientes")
+    @Scripts.Render("~/bundles/beneficiarios")
 }
 <h2>@Html.Raw(ViewBag.Title)</h2>
 @Html.Partial("Forms")

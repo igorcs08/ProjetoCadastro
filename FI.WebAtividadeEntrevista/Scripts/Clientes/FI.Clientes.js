@@ -1,7 +1,11 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $("#CPF").on("keyup", function () {
         $('#CPF').val(MascaraCPF($('#CPF').val()));
+    });
+
+    $(".btnBeneficiario").on("click", function (e) {
+        e.preventDefault();
+        openModalBeneficiario();
     });
 
     $('#formCadastro').submit(function (e) {
@@ -27,7 +31,8 @@ $(document).ready(function () {
                 "Cidade": $(this).find("#Cidade").val(),
                 "Logradouro": $(this).find("#Logradouro").val(),
                 "Telefone": $(this).find("#Telefone").val(),
-                "CPF": RemoveCaractereNaoNumerico($(this).find("#CPF").val())
+                "CPF": RemoveCaractereNaoNumerico($(this).find("#CPF").val()),
+                "Beneficiarios": listaBeneficiarios
             },
             error:
             function (r) {
@@ -35,11 +40,13 @@ $(document).ready(function () {
                     ModalDialog("Ocorreu um erro", r.responseJSON);
                 else if (r.status == 500)
                     ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
+                listaBeneficiarios = [];
             },
             success:
             function (r) {
                 ModalDialog("Sucesso!", r)
                 $("#formCadastro")[0].reset();
+                listaBeneficiarios = [];
             }
         });
     })
@@ -70,9 +77,103 @@ function ModalDialog(titulo, texto) {
     $('#' + random).modal('show');
 }
 
-function ErrorAlert(errorMessage) {
+function ErrorAlert(errorMessage, beneficiario = false) {
     var textHtml = '<div class="alert alert-danger" role="alert">' +  errorMessage + '</div>';
 
-    document.getElementById("errorNotify").innerHTML = textHtml;
-    $('#CPF').focus();
+    if (beneficiario) {
+        document.getElementById("errorNotifyCPFBeneficiario").innerHTML = textHtml;
+        $('#CPFBeneficiario').focus();
+    } else {
+        document.getElementById("errorNotify").innerHTML = textHtml;
+        $('#CPF').focus();
+    }
+}
+
+function openModalBeneficiario() {
+    let titulo = "Beneficiario";
+
+    $.ajax({
+        url: urlBeneficiario,
+        method: "GET",
+        error:
+            function (r) {
+                if (r.status == 400)
+                    ModalDialog("Ocorreu um erro", r.responseJSON);
+                else if (r.status == 500)
+                    ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
+            },
+        success:
+            function (r) {
+                $('#divModalBeneficiario').append(ModalBeneficiario(titulo, r));
+                $('#modalBeneficiario').modal('show');
+
+                ModalBeneficiarioEventos();
+            }
+    });
+}
+
+function ModalBeneficiario(titulo, texto) {
+    var texto = '<div id="modalBeneficiario" class="modal fade">                                                               ' +
+        '        <div class="modal-dialog">                                                                                 ' +
+        '            <div class="modal-content">                                                                            ' +
+        '                <div class="modal-header">                                                                         ' +
+        '                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>         ' +
+        '                    <h4 class="modal-title">' + titulo + '</h4>                                                    ' +
+        '                </div>                                                                                             ' +
+        '                <div class="modal-body">                                                                           ' +
+        '                    <p>' + texto + '</p>                                                                           ' +
+        '                </div>                                                                                             ' +
+        '                <div class="modal-footer">                                                                         ' +
+        '                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>             ' +
+        '                                                                                                                   ' +
+        '                </div>                                                                                             ' +
+        '            </div><!-- /.modal-content -->                                                                         ' +
+        '  </div><!-- /.modal-dialog -->                                                                                    ' +
+        '</div> <!-- /.modal -->                                                                                        ';
+
+    return texto;    
+}
+
+function ModalBeneficiarioEventos() {
+    $("#CPFBeneficiario").on("keyup", function (e) {
+        e.preventDefault();
+        $('#CPFBeneficiario').val(MascaraCPF($('#CPFBeneficiario').val()));
+    });
+
+    $('#btnIncluirBeneficiario').on("click", function (e) {
+        e.preventDefault();
+
+        if ($("#NomeBeneficiario").val() == "") {
+            ErrorAlert('Campo Nome não pode estar vazio!', true);
+            return;
+        } else {
+            document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
+        }
+
+        if (!CPFValido(RemoveCaractereNaoNumerico($('#CPFBeneficiario').val()))) {
+            ErrorAlert('CPF Inválido!', true);
+            return;
+        } else {
+            document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
+        }
+
+        const beneficiario = listaBeneficiarios.find(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()))
+
+        if (beneficiario) {
+            beneficiario.nome = $("#NomeBeneficiario").val();
+            beneficiario.cpf = RemoveCaractereNaoNumerico($("#CPFBeneficiario").val());
+            CarregarTabelaBeneficiarios();
+        } else {
+            listaBeneficiarios.push({ id: null, nome: $("#NomeBeneficiario").val(), cpf: RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()) });
+        }
+
+        $("#formCadastroBeneficiario")[0].reset();
+
+        CarregarTabelaBeneficiarios();
+    });
+
+    $('#modalBeneficiario').on('hidden.bs.modal', function (e) {
+        $("#formCadastroBeneficiario")[0].reset();
+        document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
+    })
 }

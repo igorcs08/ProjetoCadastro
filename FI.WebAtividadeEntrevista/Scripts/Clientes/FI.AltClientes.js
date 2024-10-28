@@ -1,5 +1,10 @@
 ﻿
 $(document).ready(function () {
+    $(".btnBeneficiario").on("click", function (e) {
+        e.preventDefault();
+        console.log("teste clique");
+    });
+
     if (obj) {
         $('#formCadastro #Nome').val(obj.Nome);
         $('#formCadastro #CEP').val(obj.CEP);
