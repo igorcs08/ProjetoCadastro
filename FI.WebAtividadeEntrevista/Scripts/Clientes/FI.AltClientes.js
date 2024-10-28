@@ -67,8 +67,7 @@ $(document).ready(function () {
                 window.location.href = urlRetorno;
             }
         });
-    })
-    
+    })    
 })
 
 function ModalDialog(titulo, texto) {
@@ -188,6 +187,9 @@ function ModalBeneficiarioEventos() {
 
             beneficiario.nome = $("#NomeBeneficiario").val();
             beneficiario.cpf = RemoveCaractereNaoNumerico($("#CPFBeneficiario").val());
+
+            ultimoCPFBeneficiario = null;
+
             CarregarTabelaBeneficiarios();
         } else {
             const existeBeneficiario = listaBeneficiarios.find(ben => ben.cpf === RemoveCaractereNaoNumerico($("#CPFBeneficiario").val()));

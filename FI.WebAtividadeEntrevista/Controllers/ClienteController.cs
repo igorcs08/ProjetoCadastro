@@ -94,6 +94,14 @@ namespace WebAtividadeEntrevista.Controllers
                 return Json(string.Join(Environment.NewLine, erros));
             }
 
+            Cliente cliente = bo.Consultar(model.Id);
+
+            if (bo.VerificarExistencia(model.CPF) && cliente.CPF != model.CPF)
+            {
+                Response.StatusCode = 400;
+                return Json("CPF já existente no banco de dados.");
+            }
+
             bo.Alterar(new Cliente()
             {
                 Id = model.Id,

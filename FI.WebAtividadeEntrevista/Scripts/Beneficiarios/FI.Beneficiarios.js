@@ -11,13 +11,13 @@ function AlterarBeneficiario(cpf, nome) {
 }
 
 function RemoverBeneficiario(cpf) {
-    const beneficiario = listaBeneficiarios.find(ben => ben.cpf = cpf);
+    const beneficiario = listaBeneficiarios.find(ben => ben.cpf == cpf);
 
     if (beneficiario.id != null) {
         listaBeneficiariosParaRemover.push(beneficiario.id);
     }
 
-    const indexBeneficiario = listaBeneficiarios.findIndex(ben => ben.cpf = cpf);
+    const indexBeneficiario = listaBeneficiarios.findIndex(ben => ben.cpf == cpf);
 
     listaBeneficiarios.splice(indexBeneficiario, 1);
 
