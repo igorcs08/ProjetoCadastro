@@ -41,12 +41,14 @@
                 else if (r.status == 500)
                     ModalDialog("Ocorreu um erro", "Ocorreu um erro interno no servidor.");
                 listaBeneficiarios = [];
+                CarregarTabelaBeneficiarios();
             },
             success:
             function (r) {
                 ModalDialog("Sucesso!", r)
                 $("#formCadastro")[0].reset();
                 listaBeneficiarios = [];
+                CarregarTabelaBeneficiarios();
             }
         });
     })
@@ -135,15 +137,15 @@ function ModalBeneficiario(titulo, texto) {
 }
 
 function ModalBeneficiarioEventos() {
-    $("#CPFBeneficiario").on("keyup", function (e) {
+    $("#CPFBeneficiario").off('keyup').on("keyup", function (e) {
         e.preventDefault();
         $('#CPFBeneficiario').val(MascaraCPF($('#CPFBeneficiario').val()));
     });
 
-    $('#btnIncluirBeneficiario').on("click", function (e) {
+    $('#btnIncluirBeneficiario').off('click').on("click", function (e) {
         e.preventDefault();
 
-        if ($("#NomeBeneficiario").val() == "") {
+        if ($("#NomeBeneficiario").val() === "") {
             ErrorAlert('Campo Nome não pode estar vazio!', true);
             return;
         } else {
