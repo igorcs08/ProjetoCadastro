@@ -26,9 +26,15 @@ O modal de beneficiário possui algumas regras.
 - Não é possível adicionar mais de um Beneficiário com o mesmo para um mesmo cliente.
 
 Ex.:
-![Tela cadastro](readme/beneficiario_CPF_existente.png)
+![Tela beneficiario](readme/beneficiario_CPF_existente.png)
 
 - É possível adicionar, alterar e remover os beneficiários.
 
 Ex.:
-![Tela cadastro](readme/beneficiario_CPF_invalido.png)
+![Tela beneficiario](readme/beneficiario_CPF_invalido.png)
+
+## Banco de dados
+
+Para o banco de dados foi necessária adição da coluna CPF na tabela Cliente e a criação de procedures para a tabela de Beneficiario.
+
+![Banco de dados](readme/tabelas_banco_dados.png)
