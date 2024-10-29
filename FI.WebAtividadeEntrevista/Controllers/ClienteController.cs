@@ -125,25 +125,28 @@ namespace WebAtividadeEntrevista.Controllers
                 }
             }
 
-            foreach (BeneficiarioModel beneficiario in model.Beneficiarios)
+            if (model.Beneficiarios != null)
             {
-                if (beneficiario.Id != null)
+                foreach (BeneficiarioModel beneficiario in model.Beneficiarios)
                 {
-                    boBeneficiario.Alterar(new Beneficiario()
+                    if (beneficiario.Id != null)
                     {
-                        CPF = beneficiario.CPF,
-                        Nome = beneficiario.Nome,
-                        Id = beneficiario.Id.Value
-                    });
-                }
-                else
-                {
-                    boBeneficiario.Incluir(new Beneficiario()
+                        boBeneficiario.Alterar(new Beneficiario()
+                        {
+                            CPF = beneficiario.CPF,
+                            Nome = beneficiario.Nome,
+                            Id = beneficiario.Id.Value
+                        });
+                    }
+                    else
                     {
-                        CPF = beneficiario.CPF,
-                        Nome = beneficiario.Nome,
-                        IdCliente = model.Id
-                    });
+                        boBeneficiario.Incluir(new Beneficiario()
+                        {
+                            CPF = beneficiario.CPF,
+                            Nome = beneficiario.Nome,
+                            IdCliente = model.Id
+                        });
+                    }
                 }
             }
 
