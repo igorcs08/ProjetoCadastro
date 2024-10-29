@@ -184,6 +184,7 @@ function ModalBeneficiarioEventos() {
         }
 
         $("#formCadastroBeneficiario")[0].reset();
+        document.getElementById("errorNotifyCPFBeneficiario").innerHTML = "";
 
         CarregarTabelaBeneficiarios();
     });
